@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encuesta Electoral Huanuni 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold:    #d4af37;
+      --gold-lt: #f5d96b;
+      --gold-dk: #8b6914;
+      --navy:    #0a1628;
+      --card-bg: rgba(10,22,60,0.9);
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      min-height: 100vh;
+      color: #f1f5f9;
+      background: var(--navy);
+      overflow-x: hidden;
+    }
+
+    /* Fondo */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 15% 0%,   rgba(212,175,55,0.15) 0%, transparent 45%),
+        radial-gradient(ellipse at 85% 100%, rgba(212,175,55,0.11) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 50%,  rgba(15,32,68,0.8)   0%, transparent 70%),
+        var(--navy);
+    }
+    .bg-lines {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image: repeating-linear-gradient(
+        108deg, transparent, transparent 60px,
+        rgba(212,175,55,0.016) 60px, rgba(212,175,55,0.016) 61px
+      );
+    }
+
+    /* Partículas */
+    .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .particle {
+      position: absolute; border-radius: 50%; opacity: 0;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { opacity:0; transform:translateY(100vh) scale(0); }
+      10%  { opacity:0.55; }
+      90%  { opacity:0.25; }
+      100% { opacity:0; transform:translateY(-8vh) scale(1.4); }
+    }
+
+    /* Línea dorada top */
+    .top-bar {
+      position: fixed; top:0; left:0; right:0; height:3px; z-index:999;
+      background: linear-gradient(90deg,
+        transparent 0%, var(--gold-dk) 10%, var(--gold) 30%,
+        var(--gold-lt) 50%, var(--gold) 70%, var(--gold-dk) 90%, transparent 100%);
+      animation: shimmer 4s ease-in-out infinite;
+    }
+    @keyframes shimmer { 0%,100%{opacity:0.7} 50%{opacity:1;filter:brightness(1.4)} }
+
+    .container { max-width: 960px; margin: auto; padding: 28px 16px 40px; position: relative; z-index: 1; }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, rgba(10,22,60,0.96) 0%, rgba(15,32,80,0.92) 100%);
+      border-radius: 20px;
+      border: 1px solid rgba(212,175,55,0.28);
+      box-shadow: inset 0 1px 0 rgba(212,175,55,0.18), 0 12px 40px rgba(0,0,0,0.6);
+      padding: 36px 24px 30px;
+      text-align: center;
+      margin-bottom: 16px;
+      position: relative; overflow: hidden;
+      animation: headerIn 0.8s ease both;
+    }
+    @keyframes headerIn { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
+
+    header::before {
+      content: '';
+      position: absolute; top:0; left:0; right:0; height:1px;
+      background: linear-gradient(90deg,
+        transparent, rgba(212,175,55,0.5) 20%, var(--gold-lt) 50%,
+        rgba(212,175,55,0.5) 80%, transparent);
+      animation: shimmer 3s ease-in-out infinite;
+    }
+    header::after {
+      content: '';
+      position: absolute; top:-40px; left:50%; transform:translateX(-50%);
+      width:500px; height:180px;
+      background: radial-gradient(ellipse, rgba(212,175,55,0.06) 0%, transparent 70%);
+      animation: pulseGlow 4s ease-in-out infinite;
+    }
+    @keyframes pulseGlow { 0%,100%{opacity:0.5;transform:translateX(-50%) scale(1)} 50%{opacity:1;transform:translateX(-50%) scale(1.1)} }
+
+    .city-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); opacity: 0.7;
+      margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .city-label::before { content:''; display:inline-block; width:40px; height:1px; background:linear-gradient(90deg,transparent,var(--gold)); }
+    .city-label::after  { content:''; display:inline-block; width:40px; height:1px; background:linear-gradient(90deg,var(--gold),transparent); }
+
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(239,68,68,0.15);
+      border: 1px solid rgba(239,68,68,0.4);
+      color: #fca5a5;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+      padding: 4px 14px; border-radius: 20px; margin-bottom: 14px;
+    }
+    .live-dot { width:7px; height:7px; background:#ef4444; border-radius:50%; animation:blink 1.2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1;box-shadow:0 0 6px #ef4444} 50%{opacity:0.2;box-shadow:none} }
+
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      letter-spacing: 4px; line-height: 0.95;
+      background: linear-gradient(180deg, var(--gold-lt) 0%, var(--gold) 40%, var(--gold-dk) 80%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+      animation: titleIn 1s ease 0.2s both;
+    }
+    @keyframes titleIn { from{opacity:0;letter-spacing:8px} to{opacity:1;letter-spacing:4px} }
+
+    .subtitle {
+      color: rgba(212,175,55,0.4);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    /* Reloj Bolivia + Countdown */
+    .time-block { margin-bottom: 20px; }
+
+    .bolivia-clock {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(212,175,55,0.5);
+      margin-bottom: 10px;
+    }
+    .bolivia-time {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
+      color: var(--gold-lt); letter-spacing: 2px;
+    }
+    .time-source {
+      font-size: 0.6rem; color: rgba(212,175,55,0.3);
+      font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1px;
+    }
+
+    .countdown { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    .cd-unit {
+      background: rgba(5,10,30,0.8);
+      border: 1px solid rgba(212,175,55,0.22);
+      border-radius: 10px; padding: 10px 18px; text-align: center; min-width: 72px;
+      box-shadow: inset 0 1px 0 rgba(212,175,55,0.1), 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .cd-num {
+      font-family: 'Bebas Neue', sans-serif; font-size: 2rem; line-height: 1; display: block;
+      background: linear-gradient(180deg, var(--gold-lt), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cd-num.flip { animation: numFlip 0.15s ease; }
+    @keyframes numFlip { 0%{transform:scaleY(0)} 100%{transform:scaleY(1)} }
+    .cd-lbl { font-size:0.58rem; text-transform:uppercase; letter-spacing:2px; color:rgba(212,175,55,0.35); display:block; margin-top:2px; font-family:'Barlow Condensed',sans-serif; }
+
+    /* ── CTA ── */
+    .vote-cta {
+      display: flex; flex-direction: column; align-items: center; gap: 10px;
+      background: linear-gradient(135deg, rgba(10,22,60,0.92), rgba(15,32,80,0.88));
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 14px; padding: 20px;
+      margin-bottom: 20px;
+      animation: ctaIn 0.7s ease 0.4s both, goldPulse 3s ease-in-out infinite alternate;
+    }
+    @keyframes ctaIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes goldPulse {
+      from { box-shadow:0 0 10px rgba(212,175,55,0.06),0 6px 20px rgba(0,0,0,0.4); border-color:rgba(212,175,55,0.2); }
+      to   { box-shadow:0 0 30px rgba(212,175,55,0.2),0 6px 20px rgba(0,0,0,0.4); border-color:rgba(212,175,55,0.55); }
+    }
+    .vote-cta p {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700; text-align: center; letter-spacing: 0.5px;
+    }
+    .cta-days { color: var(--gold); font-weight: 800; }
+
+    .vote-btn {
+      display: inline-block; position: relative; overflow: hidden;
+      background: linear-gradient(135deg, var(--gold-dk) 0%, var(--gold) 40%, var(--gold-lt) 60%, var(--gold) 100%);
+      color: var(--navy);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      letter-spacing: 2px; text-transform: uppercase; text-decoration: none;
+      border-radius: 10px; padding: 13px 36px;
+      box-shadow: 0 4px 16px rgba(212,175,55,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .vote-btn::after {
+      content: '';
+      position: absolute; top:0; left:-100%; width:60%; height:100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: btnShine 2.5s ease-in-out infinite;
+    }
+    @keyframes btnShine { 0%{left:-100%} 50%,100%{left:150%} }
+    .vote-btn:hover { transform:translateY(-3px); box-shadow:0 10px 28px rgba(212,175,55,0.55), inset 0 1px 0 rgba(255,255,255,0.25); }
+
+    .privacy-row { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; font-family:'Barlow Condensed',sans-serif; }
+    .privacy-tag {
+      font-size:0.68rem; color:rgba(212,175,55,0.45); letter-spacing:0.5px;
+      background:rgba(212,175,55,0.06); border:1px solid rgba(212,175,55,0.12);
+      border-radius:6px; padding:3px 9px;
+    }
+
+    /* ── SECTION ── */
+    .section-title { display:flex; align-items:center; gap:14px; margin:28px 0 14px; animation:sectionIn 0.5s ease both; }
+    @keyframes sectionIn { from{opacity:0;transform:translateX(-10px)} to{opacity:1;transform:translateX(0)} }
+    .section-title h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.45rem; letter-spacing: 4px; white-space: nowrap;
+      background: linear-gradient(135deg, var(--gold-lt), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-line { flex:1; height:1px; background:linear-gradient(90deg,rgba(212,175,55,0.35),transparent); }
+
+    /* ── GRID ── */
+    .donut-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:12px; }
+
+    .cand-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(212,175,55,0.12);
+      border-radius: 14px; padding: 16px 18px;
+      display: flex; gap: 14px; align-items: center;
+      position: relative; overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s, border-color 0.25s;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.45);
+      animation: cardIn 0.5s cubic-bezier(0.4,0,0.2,1) both;
+    }
+    @keyframes cardIn { from{opacity:0;transform:translateY(16px) scale(0.97)} to{opacity:1;transform:translateY(0) scale(1)} }
+    .cand-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(212,175,55,0.03) 0%,transparent 60%);
+      pointer-events:none;
+    }
+    .cand-card:hover { transform:translateY(-4px) scale(1.01); box-shadow:0 14px 32px rgba(0,0,0,0.55),0 0 0 1px rgba(212,175,55,0.22); border-color:rgba(212,175,55,0.35); }
+    .cand-card.rank-1 { border-color:rgba(212,175,55,0.4); box-shadow:0 0 24px rgba(212,175,55,0.1),0 4px 16px rgba(0,0,0,0.45); }
+    .cand-card.rank-1 .top-stripe { animation:stripeShimmer 2.5s linear infinite; }
+    @keyframes stripeShimmer { 0%,100%{filter:brightness(1)} 50%{filter:brightness(1.5)} }
+
+    .top-stripe { position:absolute; top:0; left:0; right:0; height:3px; border-radius:14px 14px 0 0; }
+
+    .donut-wrap { position:relative; flex-shrink:0; width:80px; height:80px; }
+    .donut-svg  { position:absolute; top:0; left:0; transform:rotate(-90deg); }
+    .donut-track { fill:none; stroke:rgba(255,255,255,0.04); stroke-width:9; }
+    .donut-arc   { fill:none; stroke-width:9; stroke-linecap:round; transition:stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1); }
+    .donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .donut-pct  { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; line-height:1; }
+    .donut-rank { font-size:0.52rem; color:rgba(212,175,55,0.4); letter-spacing:1px; font-family:'Barlow Condensed',sans-serif; }
+
+    .cand-info  { flex:1; min-width:0; }
+    .cand-name  { font-weight:700; font-size:0.88rem; line-height:1.2; margin-bottom:2px; color:#e2e8f0; }
+    .cand-party { font-family:'Barlow Condensed',sans-serif; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:rgba(212,175,55,0.4); margin-bottom:10px; }
+
+    .pct-display { font-family:'Bebas Neue',sans-serif; font-size:1.8rem; line-height:1; margin-bottom:8px; transition:transform 0.3s; }
+    .cand-card:hover .pct-display { transform:scale(1.05); }
+
+    .bar-bg   { background:rgba(0,0,0,0.4); height:5px; border-radius:3px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:3px; width:0; transition:width 1.4s cubic-bezier(0.4,0,0.2,1); }
+
+    /* ── LEYENDA ── */
+    .legend {
+      background: var(--card-bg);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: 14px; padding: 20px 22px; margin-top: 24px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+      animation: cardIn 0.5s ease 0.6s both;
+    }
+    .legend-title {
+      font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:3px; margin-bottom:14px;
+      background:linear-gradient(135deg,var(--gold),var(--gold-dk));
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    }
+    .legend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(205px,1fr)); gap:10px; }
+    .legend-item { display:flex; align-items:center; gap:9px; }
+    .legend-dot  { width:13px; height:13px; border-radius:50%; flex-shrink:0; }
+    .legend-name { font-size:0.8rem; font-weight:700; color:#e2e8f0; }
+    .legend-lbl  { font-size:0.65rem; color:rgba(212,175,55,0.35); font-family:'Barlow Condensed',sans-serif; letter-spacing:0.5px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align:center; padding:24px 16px;
+      color:rgba(212,175,55,0.25); font-size:0.75rem;
+      margin-top:30px; border-top:1px solid rgba(212,175,55,0.08);
+      line-height:2; font-family:'Barlow Condensed',sans-serif; letter-spacing:0.5px;
+    }
+    footer a { color:rgba(212,175,55,0.6); text-decoration:none; transition:color 0.2s; }
+    footer a:hover { color:var(--gold-lt); }
+
+    /* Indicador de carga de hora */
+    .time-loading { color:rgba(212,175,55,0.4); font-size:0.7rem; font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; animation:blink 1s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-layer"></div>
+  <div class="bg-lines"></div>
+  <div class="top-bar"></div>
+  <div class="particles" id="particles"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <header>
+    <div class="city-label">Municipio de Huanuni · Oruro · Bolivia</div>
+    <div class="live-badge"><span class="live-dot"></span> Encuesta en vivo</div>
+    <h1>Elecciones Municipales<br>Huanuni 2026</h1>
+    <p class="subtitle">Intencion de voto · Solo porcentajes · Participacion anonima</p>
+
+    <!-- Reloj Bolivia -->
+    <div class="time-block">
+      <div class="bolivia-clock">
+        Hora Bolivia &nbsp;·&nbsp;
+        <span class="bolivia-time" id="bol-time">--:--:--</span>
+      </div>
+
+      <!-- Cierre: 22 Feb 2026 23:59 hora boliviana = 23 Feb 2026 03:59 UTC -->
+      <div class="bolivia-clock" style="margin-bottom:12px; color:rgba(212,175,55,0.55);">
+        Cierre de encuesta: <strong style="color:var(--gold)">22 Feb 2026 · 23:59 hs Bolivia</strong>
+      </div>
+
+      <div class="countdown">
+        <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Dias</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Horas</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Min</span></div>
+        <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Seg</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CTA -->
+  <div class="vote-cta">
+    <p>La encuesta cierra en <span class="cta-days" id="dias-txt">...</span> · Tu voto define el resultado</p>
+    <a href="https://rootphanton.github.io/Intencion-de-voto-Huanuni/" target="_blank" class="vote-btn">
+      Participar en la encuesta
+    </a>
+    <div class="privacy-row">
+      <span class="privacy-tag">Voto 100% anonimo</span>
+      <span class="privacy-tag">Sin registro</span>
+      <span class="privacy-tag">Sin datos personales</span>
+      <span class="privacy-tag">Sin cookies de rastreo</span>
+    </div>
+  </div>
+
+  <!-- ALCALDE -->
+  <div class="section-title">
+    <h2>Candidatos a Alcalde</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="donut-grid" id="grid-alcalde"></div>
+
+  <!-- CONCEJAL -->
+  <div class="section-title" style="margin-top:28px; animation-delay:0.2s">
+    <h2>Candidatos a Concejal</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="donut-grid" id="grid-concejal"></div>
+
+  <!-- LEYENDA -->
+  <div class="legend">
+    <div class="legend-title">Frentes Politicos</div>
+    <div class="legend-grid" id="legend-grid"></div>
+  </div>
+
+  <footer>
+    Encuesta de intencion de voto · Municipio de Huanuni, Oruro · Bolivia · 2026<br>
+    Participacion 100% anonima · No se almacenan datos personales<br>
+    Los resultados son referenciales y no constituyen resultados electorales oficiales<br>
+    <a href="https://rootphanton.github.io/Intencion-de-voto-Huanuni/" target="_blank">
+      rootphanton.github.io/Intencion-de-voto-Huanuni
+    </a>
+  </footer>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════
+// FRENTES
+// ════════════════════════════════════════════════════════
+const FRENTES = {
+  'AYLLU':          { label: 'Movimiento AYLLU',                  c1:'#064e3b', c2:null      },
+  'A-UPP':          { label: 'Alianza Unida por los Pueblos',      c1:'#78350f', c2:'#facc15' },
+  'PATRIA':         { label: 'Patria Grande',                      c1:'#f97316', c2:null      },
+  "JACH'A HUANUNI": { label: "Jach'a Huanuni",                    c1:'#dc2626', c2:'#e5e7eb' },
+  'PP':             { label: 'Pueblo en Pie',                      c1:'#fb923c', c2:'#111111' },
+  'SOMOS ORURO':    { label: 'Somos Oruro',                        c1:'#d946ef', c2:'#38bdf8' },
+  'FRI':            { label: 'Frente Revolucionario de Izquierda', c1:'#ef4444', c2:'#3b82f6' },
+};
+
+const ALCALDES = [
+  { name:'Jaime Mamani',           party:'AYLLU',          pct:29.9 },
+  { name:'Ever Colque',            party:'A-UPP',          pct:21.5 },
+  { name:'Rossemary Ardaya',       party:"JACH'A HUANUNI", pct:14.9 },
+  { name:'Americo Luis Calani',    party:'PP',             pct:12.1 },
+  { name:'Jose Wenceslao Mamani',  party:'FRI',            pct:7.5  },
+  { name:'Victor Hugo Loayza',     party:'PATRIA',         pct:6.5  },
+  { name:'Jose Manuel Crespo',     party:'SOMOS ORURO',    pct:2.8  },
+];
+
+const CONCEJALES = [
+  { name:'Juan De Dios Mamani',    party:'A-UPP',          pct:32.7 },
+  { name:'Cecilio Antonio Alegre', party:'AYLLU',          pct:28.0 },
+  { name:'Magali Mitma',           party:'PP',             pct:11.2 },
+  { name:'Ivan Jose Huanca',       party:"JACH'A HUANUNI", pct:10.3 },
+  { name:'Mirian Raquel Alvaro',   party:'FRI',            pct:9.3  },
+  { name:'Brenda Antonia Ramirez', party:'SOMOS ORURO',    pct:4.7  },
+  { name:'Esttefany Aserico',      party:'PATRIA',         pct:3.7  },
+];
+
+// ════════════════════════════════════════════════════════
+// HELPERS
+// ════════════════════════════════════════════════════════
+function gId(p)  { return 'g_'+p.replace(/[^a-z0-9]/gi,'_'); }
+function gradDef(f,id) {
+  if(!f.c2) return '';
+  return `<defs><linearGradient id="${id}" x1="0%" y1="0%" x2="100%" y2="0%">
+    <stop offset="0%" stop-color="${f.c1}"/>
+    <stop offset="100%" stop-color="${f.c2}"/>
+  </linearGradient></defs>`;
+}
+function strokeRef(f,id){ return f.c2?`url(#${id})`:f.c1; }
+function barCSS(f)  { return f.c2?`background:linear-gradient(90deg,${f.c1},${f.c2})`:`background:${f.c1}`; }
+function topCSS(f)  { return f.c2?`background:linear-gradient(90deg,${f.c1} 50%,${f.c2} 50%)`:`background:${f.c1}`; }
+function dotCSS(f)  { return f.c2?`background:linear-gradient(135deg,${f.c1} 50%,${f.c2} 50%)`:`background:${f.c1}`; }
+function pctCol(f)  { return f.c2?'#f5d96b':f.c1; }
+
+// ════════════════════════════════════════════════════════
+// DONUT
+// ════════════════════════════════════════════════════════
+const R=31, CIRC=2*Math.PI*R;
+
+function buildCard(cand,rank){
+  const f=FRENTES[cand.party]||{label:cand.party,c1:'#94a3b8',c2:null};
+  const id=gId(cand.party);
+  const off=(CIRC-CIRC*cand.pct/100).toFixed(2);
+  return `
+  <div class="cand-card ${rank===1?'rank-1':''}" style="animation-delay:${(rank-1)*0.07}s">
+    <div class="top-stripe" style="${topCSS(f)}"></div>
+    <div class="donut-wrap">
+      <svg class="donut-svg" width="80" height="80" viewBox="0 0 80 80">
+        ${gradDef(f,id)}
+        <circle class="donut-track" cx="40" cy="40" r="${R}"/>
+        <circle class="donut-arc"
+          cx="40" cy="40" r="${R}"
+          stroke="${strokeRef(f,id)}"
+          stroke-dasharray="${CIRC.toFixed(2)}"
+          stroke-dashoffset="${CIRC.toFixed(2)}"
+          data-offset="${off}"/>
+      </svg>
+      <div class="donut-center">
+        <span class="donut-pct" style="color:${pctCol(f)}">${cand.pct}%</span>
+        <span class="donut-rank">#${rank}</span>
+      </div>
+    </div>
+    <div class="cand-info">
+      <div class="cand-name">${cand.name}</div>
+      <div class="cand-party">${cand.party}</div>
+      <div class="pct-display" style="color:${pctCol(f)}">${cand.pct}<span style="font-size:1rem;opacity:0.65">%</span></div>
+      <div class="bar-bg"><div class="bar-fill" style="${barCSS(f)}" data-width="${cand.pct}"></div></div>
+    </div>
+  </div>`;
+}
+
+function renderGrid(id,data){
+  const sorted=[...data].sort((a,b)=>b.pct-a.pct);
+  document.getElementById(id).innerHTML=sorted.map((c,i)=>buildCard(c,i+1)).join('');
+}
+renderGrid('grid-alcalde',ALCALDES);
+renderGrid('grid-concejal',CONCEJALES);
+
+document.getElementById('legend-grid').innerHTML=
+  Object.entries(FRENTES).map(([k,f])=>`
+    <div class="legend-item">
+      <div class="legend-dot" style="${dotCSS(f)}"></div>
+      <div><div class="legend-name">${k}</div><div class="legend-lbl">${f.label}</div></div>
+    </div>`).join('');
+
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.querySelectorAll('.donut-arc').forEach(a=>{a.style.strokeDashoffset=a.dataset.offset;});
+    document.querySelectorAll('.bar-fill').forEach(b=>{b.style.width=b.dataset.width+'%';});
+  },300);
+});
+
+// ════════════════════════════════════════════════════════
+// PARTICULAS
+// ════════════════════════════════════════════════════════
+const pC=document.getElementById('particles');
+for(let i=0;i<28;i++){
+  const p=document.createElement('div');
+  p.className='particle';
+  const s=Math.random()*2.5+1;
+  p.style.cssText=`left:${Math.random()*100}%;width:${s}px;height:${s}px;background:${Math.random()>0.5?'#d4af37':'#f5d96b'};animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*12}s;opacity:0;`;
+  pC.appendChild(p);
+}
+
+// ════════════════════════════════════════════════════════
+// HORA BOLIVIANA REAL + COUNTDOWN
+// Bolivia = UTC-4 fijo (sin horario de verano)
+// Fecha de cierre: 22 Feb 2026 23:59:00 hora Bolivia (UTC-4)
+// En UTC: 23 Feb 2026 03:59:00 UTC
+// ════════════════════════════════════════════════════════
+
+// Fecha exacta de cierre en UTC
+const CLOSE_UTC = new Date(Date.UTC(2026, 1, 23, 3, 59, 0)); // mes 1 = febrero
+
+// ── HORA Y COUNTDOWN ─────────────────────────────────────────
+// Usamos directamente new Date() del dispositivo del usuario.
+// Si el dispositivo está configurado en hora Bolivia, todo es perfecto.
+// No hay APIs externas, no hay cálculos de offset — simple y exacto.
+
+let prevVals = {};
+function fmt2(n){ return String(n).padStart(2,'0'); }
+
+function tick(){
+  const now = new Date(); // hora local del dispositivo
+
+  // Mostrar hora Bolivia (hora del dispositivo)
+  const bolEl = document.getElementById('bol-time');
+  if(bolEl){
+    bolEl.textContent =
+      fmt2(now.getHours()) + ':' +
+      fmt2(now.getMinutes()) + ':' +
+      fmt2(now.getSeconds());
+  }
+
+  // Countdown: CLOSE_UTC es UTC, Date.now() también es UTC internamente — la resta es exacta
+  const diff = Math.max(0, CLOSE_UTC.getTime() - Date.now());
+  const dd = Math.floor(diff / 86400000);
+  const hh = Math.floor((diff % 86400000) / 3600000);
+  const mm = Math.floor((diff % 3600000)  / 60000);
+  const ss = Math.floor((diff % 60000)    / 1000);
+
+  const units = {d:dd, h:hh, m:mm, s:ss};
+  for(const [k,v] of Object.entries(units)){
+    const el = document.getElementById('cd-'+k);
+    if(!el) continue;
+    const str = fmt2(v);
+    if(str !== prevVals[k]){
+      el.textContent = str;
+      el.classList.remove('flip');
+      void el.offsetWidth;
+      el.classList.add('flip');
+      prevVals[k] = str;
+    }
+  }
+
+  const diasEl = document.getElementById('dias-txt');
+  if(diasEl){
+    if(diff <= 0)   diasEl.textContent = 'tiempo agotado';
+    else if(dd > 0) diasEl.textContent = `${dd} dia${dd!==1?'s':''}`;
+    else if(hh > 0) diasEl.textContent = `${hh} hora${hh!==1?'s':''}`;
+    else            diasEl.textContent = 'menos de 1 hora';
+  }
+}
+
+tick();
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
