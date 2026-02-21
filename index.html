@@ -390,7 +390,8 @@
   <div class="day-tabs">
     <button class="day-tab" id="tab-d1" onclick="switchDay(1)">Día 1</button>
     <button class="day-tab" id="tab-d2" onclick="switchDay(2)">Día 2</button>
-    <button class="day-tab active" id="tab-d3" onclick="switchDay(3)">Día 3</button>
+    <button class="day-tab" id="tab-d3" onclick="switchDay(3)">Día 3</button>
+    <button class="day-tab active" id="tab-d4" onclick="switchDay(4)">Día 4</button>
   </div>
 
   <!-- DÍA 1 -->
@@ -427,8 +428,8 @@
     <div class="donut-grid" id="grid-concejal-d2"></div>
   </div>
 
-  <!-- DÍA 3 (NUEVO) -->
-  <div class="day-panel active" id="panel-d3">
+  <!-- DÍA 3 -->
+  <div class="day-panel" id="panel-d3">
     <div style="text-align:center; margin-bottom:10px;">
       <span class="day-badge new">
         Resultados · Día 3 · 20 Feb 2026 &nbsp;<span class="new-pill">Nuevo</span>
@@ -444,6 +445,25 @@
       <div class="section-line"></div>
     </div>
     <div class="donut-grid" id="grid-concejal-d3"></div>
+  </div>
+
+  <!-- DÍA 4 (NUEVO) -->
+  <div class="day-panel active" id="panel-d4">
+    <div style="text-align:center; margin-bottom:10px;">
+      <span class="day-badge new">
+        Resultados · Día 4 · 21 Feb 2026 &nbsp;<span class="new-pill">Nuevo</span>
+      </span>
+    </div>
+    <div class="section-title">
+      <h2>Candidatos a Alcalde</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="donut-grid" id="grid-alcalde-d4"></div>
+    <div class="section-title" style="margin-top:28px; animation-delay:0.2s">
+      <h2>Candidatos a Concejal</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="donut-grid" id="grid-concejal-d4"></div>
   </div>
 
   <!-- LEYENDA -->
@@ -539,8 +559,25 @@ const CONCEJALES_D3 = [
   { name:'Brenda Antonia Ramirez', party:'SOMOS', pct:2.30  },
 ];
 
-// ════════════════════════════════════════════════════════
-// HELPERS
+// ── DÍA 4 ────────────────────────────────────────────────
+const ALCALDES_D4 = [
+  { name:'Jaime Mamani',           party:'IO',    pct:29.17 },
+  { name:'Americo Luis Calani',    party:'PP',    pct:18.91 },
+  { name:'Ever Colque',            party:'A-UPP', pct:17.95 },
+  { name:'Rossemary Ardaya',       party:'JACHA', pct:17.31 },
+  { name:'Jose Wenceslao Mamani',  party:'FRI',   pct:16.67 },
+  { name:'Victor Hugo Loayza',     party:'PATRIA',pct:3.53  },
+  { name:'Jose Manuel Crespo',     party:'SOMOS', pct:2.56  },
+];
+const CONCEJALES_D4 = [
+  { name:'Cecilio Antonio Alegre', party:'IO',    pct:27.91 },
+  { name:'Juan De Dios Mamani',    party:'A-UPP', pct:25.00 },
+  { name:'Magali Mitma',           party:'PP',    pct:18.02 },
+  { name:'Mirian Raquel Alvaro',   party:'FRI',   pct:11.34 },
+  { name:'Ivan Jose Huanca',       party:'JACHA', pct:9.59  },
+  { name:'Esttefany Aserico',      party:'PATRIA',pct:4.65  },
+  { name:'Brenda Antonia Ramirez', party:'SOMOS', pct:3.49  },
+];
 // ════════════════════════════════════════════════════════
 function gId(p)  { return 'g_'+p.replace(/[^a-z0-9]/gi,'_'); }
 function gradDef(f,id) {
@@ -602,6 +639,8 @@ renderGrid('grid-alcalde-d2', ALCALDES_D2);
 renderGrid('grid-concejal-d2', CONCEJALES_D2);
 renderGrid('grid-alcalde-d3', ALCALDES_D3);
 renderGrid('grid-concejal-d3', CONCEJALES_D3);
+renderGrid('grid-alcalde-d4', ALCALDES_D4);
+renderGrid('grid-concejal-d4', CONCEJALES_D4);
 
 document.getElementById('legend-grid').innerHTML=
   Object.entries(FRENTES).map(([k,f])=>`
@@ -618,7 +657,7 @@ setTimeout(animateAll, 400);
 }); // end DOMContentLoaded
 
 function switchDay(day) {
-  [1,2,3].forEach(d=>{
+  [1,2,3,4].forEach(d=>{
     document.getElementById('panel-d'+d).classList.toggle('active', d===day);
     document.getElementById('tab-d'+d).classList.toggle('active', d===day);
   });
@@ -687,5 +726,4 @@ tick();
 setInterval(tick, 1000);
 </script>
 </body>
-</html>
 </html>
